@@ -10,6 +10,8 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600&display=swap" rel="stylesheet">
   <!-- Bootstrap CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
+  <!-- font-awesome -->
+  <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
   <link rel="stylesheet" href="./base.css">
   <title>Log Trade</title>
 </head>
@@ -75,21 +77,17 @@
       float: right;
     }
     .add-stock {
-      all: unset;
-      position: absolute;
+      position: fixed;
       bottom: 25px;
       right: 25px;
       width: 50px;
       height: 50px;
       border-radius: 50%;
+      background-color: greenyellow;
       box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
     }
-    .add-stock img {
-      max-width: 100%;
-      height: auto;
+    .add-stock i {
       position: relative;
-      box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
-      border-radius: 50%;
     }
     .add-stock span {
       display: none;
@@ -149,10 +147,57 @@
       <div class="day"></div>
     </section>
 
-    <button class="add-stock">
-      <span>Add Stock</span>
-      <img src="assets/img/add.png" alt="Add Stock Icon">
+    <!-- button to trigger new stock modal -->
+    <button 
+      class="add-stock" 
+      data-bs-toggle="modal" 
+      data-bs-target="#stockModal"
+    >
+      <span>Add Stock</span> 
+      <i class="far fa-3x fa-plus-square"></i>
     </button>
+
+    <!-- Modal for new stock -->
+    <div class="modal fade" id="stockModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Add New Stock</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <!-- new stock form -->
+            <form action="#" id="new-stock-form">
+              <div class="mb-3">
+                <label for="stock" class="form-label">Stock</label>
+                <input type="text" name="stock" class="form-control" id="stock" placeholder="AAPL" required>
+              </div>
+
+              <label for="opening-price" class="form-label">Opening Price</label>
+              <div class="input-group mb-3">
+                <span class="input-group-text" id="basic-addon1">$</span>
+                <input type="number" name="opening-price" id="opening-price" class="form-control" placeholder="95.50" aria-label="Opening Price" aria-describedby="basic-addon1" required>
+              </div>
+
+              <label for="closing-price" class="form-label">Closing Price</label>
+              <div class="input-group mb-3">
+                <span class="input-group-text" id="basic-addon1">$</span>
+                <input type="number" name="closing-price" id="closing" class="form-control" placeholder="100.50" aria-label="Closing Price" aria-describedby="basic-addon1" required>
+              </div>
+
+              <div class="mb-3">
+                <label for="notes" class="form-label">Notes</label>
+                <textarea class="form-control" name="notes" id="notes" rows="3"></textarea>
+              </div>
+
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              <button type="submit" data-bs-dismiss="modal" class="btn btn-primary">Add Stock</button>
+            </form>
+
+          </div>
+        </div>
+      </div>
+    </div>
   </main>
 
   <!-- Option 1: Bootstrap Bundle with Popper -->
@@ -285,6 +330,23 @@
           // An error happened.
         });
       });
+    
+    // listen for add stock btn click and perform action
+    document
+      .querySelector('.add-stock')
+      .addEventListener('click', () => {
+        const newStockForm = document.getElementById('new-stock-form');
+        newStockForm
+          .addEventListener('submit', function(e) {
+            e.preventDefault();
+            const stock = newStockForm['stock'].value;
+            const openingPrice = newStockForm['opening-price'].value;
+            const closingPrice = newStockForm['closing-price'].value;
+            const notes = newStockForm['notes'].value;
+            console.log({ stock, openingPrice, closingPrice, notes });
+            console.log({ currentUser: auth.currentUser });
+          });
+      })
   </script>
 </body>
 </html>
